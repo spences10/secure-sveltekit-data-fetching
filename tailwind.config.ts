@@ -10,4 +10,8 @@ export default {
 	},
 
 	plugins: [typography, daisyui],
+
+	daisyui: {
+		themes: ['light'],
+	},
 } satisfies Config;
