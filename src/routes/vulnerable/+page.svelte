@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Warning, ErrorX } from '$lib/icons';
+	import { info_banner } from '$lib/components/info-banner.svelte';
+	import { footer_banner } from '$lib/components/footer-banner.svelte';
 
 	let data: any = null;
 	let error: string | null = null;
@@ -27,13 +29,10 @@
 		⚠️ Vulnerable Implementation
 	</h1>
 
-	<div class="alert alert-error mb-6">
-		<Warning class_names="h-6 w-6 shrink-0 stroke-current" />
-		<span>
-			This page demonstrates common security anti-patterns. DO NOT use
-			this code in production!
-		</span>
-	</div>
+	{@render info_banner(
+		'warning',
+		'This page demonstrates common security anti-patterns. DO NOT use this code in production!',
+	)}
 
 	<div class="card mb-6 bg-base-200">
 		<div class="card-body">
@@ -61,25 +60,35 @@
 					<span>{error}</span>
 				</div>
 			{:else if data}
-				<div class="alert alert-warning mb-4">
-					<Warning class_names="h-6 w-6 shrink-0 stroke-current" />
-					<span>
-						Notice how sensitive data is exposed directly to the
-						client!
-					</span>
+				{@render info_banner(
+					'warning',
+					'Notice how sensitive data is exposed directly to the client!',
+					'alert alert-warning mb-4',
+				)}
+				<div class="mockup-code">
+					<pre><code>{JSON.stringify(data, null, 2)}</code></pre>
 				</div>
-				<pre
-					class="overflow-x-auto rounded-lg bg-base-300 p-4">{JSON.stringify(
-						data,
-						null,
-						2,
-					)}</pre>
 			{:else}
+				{@render info_banner(
+					'warning',
+					'Notice how sensitive data is exposed directly to the client!',
+					'alert alert-info',
+				)}
 				<div class="alert alert-info">
 					<span class="loading loading-spinner"></span>
 					<span>Loading sensitive data unsafely...</span>
 				</div>
 			{/if}
+
+			{@render footer_banner(
+				'warning',
+				{
+					title: 'Security Warning',
+					description:
+						'Instead of this approach, use server-side data loading with proper authentication and data filtering. See the secure example for the correct implementation.',
+				},
+				'alert alert-warning mt-4',
+			)}
 
 			<div class="alert alert-error mt-4">
 				<Warning class_names="h-6 w-6 shrink-0 stroke-current" />

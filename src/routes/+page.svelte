@@ -1,9 +1,6 @@
 <script>
-	import {
-		InformationCircle,
-		Warning,
-		CheckCircle,
-	} from '$lib/icons';
+	import { footer_banner } from '$lib/components/footer-banner.svelte';
+	import { info_banner } from '$lib/components/info-banner.svelte';
 </script>
 
 <div class="prose prose-lg max-w-none px-2 sm:px-0">
@@ -11,15 +8,11 @@
 		SvelteKit Security Best Practices
 	</h1>
 
-	<div
-		class="alert alert-info mb-4 flex-col items-center gap-2 text-center sm:mb-6 sm:flex-row sm:gap-2 sm:text-left"
-	>
-		<InformationCircle />
-		<span>
-			This is a demonstration project showcasing various security
-			patterns and anti-patterns in SvelteKit applications.
-		</span>
-	</div>
+	{@render info_banner(
+		'information',
+		'This is a demonstration project showcasing various security patterns and anti-patterns in SvelteKit applications.',
+		'alert alert-info mb-4 flex-col items-center gap-2 text-center sm:mb-6 sm:flex-row sm:gap-2 sm:text-left',
+	)}
 
 	<h2 class="mt-6 text-xl font-semibold sm:mt-8 sm:text-2xl">
 		Available Examples
@@ -93,15 +86,13 @@
 					Contains common security anti-patterns. Use this as a
 					reference for what to avoid in your applications.
 				</p>
-				<div
-					class="alert alert-warning mb-4 mt-2 flex-col items-center gap-2 text-center sm:flex-row sm:gap-2 sm:text-left"
-				>
-					<Warning class_names="h-6 w-6 shrink-0 stroke-current" />
-					<span>
-						This example intentionally contains security
-						vulnerabilities for educational purposes.
-					</span>
-				</div>
+
+				{@render info_banner(
+					'warning',
+					'This example intentionally contains security vulnerabilities for educational purposes.',
+					'alert alert-warning mb-6',
+				)}
+
 				<div class="card-actions mt-auto justify-end">
 					<a
 						href="/vulnerable"
@@ -114,16 +105,13 @@
 		</div>
 	</div>
 
-	<div
-		class="alert alert-success mt-6 flex-col items-center gap-2 text-center sm:mt-8 sm:flex-row sm:gap-2 sm:text-left"
-	>
-		<CheckCircle class_names="h-6 w-6 shrink-0 stroke-current" />
-		<div>
-			<h3 class="font-bold">Best Practices</h3>
-			<div class="text-sm sm:text-base">
-				Each example includes detailed comments explaining the
-				security concepts and implementation details.
-			</div>
-		</div>
-	</div>
+	{@render footer_banner(
+		'success',
+		{
+			title: 'Best Practices',
+			description:
+				'Each example includes detailed comments explaining the security concepts and implementation details.',
+		},
+		'alert alert-success mt-4',
+	)}
 </div>

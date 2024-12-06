@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import type { ActionData } from './$types';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import { InformationCircle, CheckCircle } from '$lib/icons';
+	import { CheckCircle } from '$lib/icons';
+	import { info_banner } from '$lib/components/info-banner.svelte';
 
-	export let form: ActionData;
+	let { form } = $props();
 
-	let loading = false;
+	let loading = $state(false);
 
 	const handleSubmit: SubmitFunction = () => {
 		loading = true;
@@ -20,15 +20,11 @@
 <div class="prose max-w-none">
 	<h1 class="mb-6 text-3xl font-bold">Secure Form Handling</h1>
 
-	<div class="alert alert-info mb-6">
-		<InformationCircle
-			class_names="h-6 w-6 shrink-0 stroke-current"
-		/>
-		<span
-			>This example demonstrates secure form handling with SvelteKit
-			form actions.</span
-		>
-	</div>
+	{@render info_banner(
+		'information',
+		'This example demonstrates secure form handling with SvelteKit form actions.',
+		'alert alert-info mb-6',
+	)}
 
 	<div class="card mb-6 bg-base-200">
 		<div class="card-body">
@@ -71,7 +67,7 @@
 						required
 					/>
 					{#if form?.error}
-						<label class="label">
+						<label for="id" class="label">
 							<span class="label-text-alt text-error">
 								{form.error}
 							</span>

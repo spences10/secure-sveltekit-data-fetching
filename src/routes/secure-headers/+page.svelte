@@ -1,20 +1,18 @@
 <script lang="ts">
-	import { InformationCircle, Warning } from '$lib/icons';
-	export let data;
+	import { footer_banner } from '$lib/components/footer-banner.svelte';
+	import { info_banner } from '$lib/components/info-banner.svelte';
+
+	let { data } = $props();
 </script>
 
 <div class="prose max-w-none">
 	<h1 class="mb-6 text-3xl font-bold">Secure Headers Example</h1>
 
-	<div class="alert alert-info mb-6">
-		<InformationCircle
-			class_names="h-6 w-6 shrink-0 stroke-current"
-		/>
-		<span>
-			This page demonstrates the implementation of security headers in
-			SvelteKit.
-		</span>
-	</div>
+	{@render info_banner(
+		'information',
+		'This page demonstrates the implementation of security headers in SvelteKit.',
+		'alert alert-info mb-6',
+	)}
 
 	<div class="card mb-6 bg-base-200">
 		<div class="card-body">
@@ -70,24 +68,19 @@
 		<div class="card-body">
 			<h2 class="card-title">API Response Data</h2>
 			<p>Below is the secure response from our API endpoint:</p>
-			<pre
-				class="overflow-x-auto rounded-lg bg-base-300 p-4">{JSON.stringify(
-					data.apiData,
-					null,
-					2,
-				)}</pre>
-
-			<div class="alert alert-warning mt-4">
-				<Warning class_names="h-6 w-6 shrink-0 stroke-current" />
-				<div>
-					<h3 class="font-bold">Security Note</h3>
-					<div class="text-sm">
-						The API key used in this example should be stored in
-						environment variables in a production environment. Never
-						expose sensitive credentials in client-side code.
-					</div>
-				</div>
+			<div class="mockup-code">
+				<pre><code>{JSON.stringify(data, null, 2)}</code></pre>
 			</div>
+
+			{@render footer_banner(
+				'warning',
+				{
+					title: 'Security Note',
+					description:
+						'The API key used in this example should be stored in environment variables in a production environment. Never expose sensitive credentials in client-side code.',
+				},
+				'alert alert-warning mt-4',
+			)}
 		</div>
 	</div>
 </div>
