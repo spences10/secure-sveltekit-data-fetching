@@ -80,8 +80,12 @@ function get_user_from_request(event: Parameters<Handle>[0]['event']): App.Local
 	if (cookie_header) {
 		const cookies: Record<string, string> = {};
 		cookie_header.split(';').forEach((cookie: string) => {
-			const [key, value] = cookie.trim().split('=');
+		const parts = cookie.trim().split('=');
+		if (parts.length >= 2) {
+			const key = parts[0];
+			const value = parts.slice(1).join('=');
 			cookies[key] = value;
+		}
 		});
 		
 		if (cookies.auth_token) {

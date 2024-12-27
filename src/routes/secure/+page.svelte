@@ -7,18 +7,6 @@
 
 	let { data } = $props();
 
-	// Type-check the data
-	type SecurePageData = PageData & {
-		users: Array<{
-			id: number;
-			email: string;
-		}>;
-	};
-
-	$effect(() => {
-		// Ensure data matches expected type
-		const _typed_data: SecurePageData = data;
-	});
 
 	// Handle authentication
 	use_auth();
@@ -35,7 +23,7 @@
 	{@render info_banner(
 		'information',
 		'This example demonstrates secure server-side data handling and filtering of sensitive information.',
-		'alert alert-info mb-6',
+		'alert alert-info mb-6'
 	)}
 
 	<div class="card mb-6 bg-base-200">
@@ -76,7 +64,7 @@
 			{@render info_banner(
 				'warning',
 				'Notice that sensitive data (API keys) has been filtered out server-side',
-				'alert alert-warning mb-4',
+				'alert alert-warning mb-4'
 			)}
 
 			<div class="overflow-x-auto">
@@ -108,10 +96,9 @@
 				'success',
 				{
 					title: 'Security Best Practice',
-					description:
-						'Always filter sensitive data server-side. Never rely on client-side filtering as it can be bypassed.',
+					description: 'Always filter sensitive data server-side. Never rely on client-side filtering as it can be bypassed.'
 				},
-				'alert alert-success mt-4',
+				'alert alert-success mt-4'
 			)}
 		</div>
 	</div>

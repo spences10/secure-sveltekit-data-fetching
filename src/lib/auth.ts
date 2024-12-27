@@ -14,6 +14,9 @@ export function use_auth() {
 				if (!token) {
 					const return_url = window.location.pathname;
 					goto(`/login?return_to=${encodeURIComponent(return_url)}`);
+				} else {
+					// Ensure cookie is set for server-side auth
+					document.cookie = `auth_token=demo-user; path=/; SameSite=Strict`;
 				}
 			}
 		});
@@ -33,7 +36,7 @@ export function get_current_user(): User | null {
 	if (!token) return null;
 
 	// Set auth cookie for server-side auth
-	document.cookie = `auth_token=${token}; path=/; SameSite=Strict`;
+	document.cookie = `auth_token=demo-user; path=/; SameSite=Strict`;
 	
 	// For demo purposes - matches the mock user in hooks.server.ts
 	return {

@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { info_banner } from '$lib/components/info-banner.svelte';
 	import { goto } from '$app/navigation';
+	import { get_current_user } from '$lib/auth';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { page } from '$app/stores';
 
@@ -14,10 +15,14 @@
 			loading = false;
 			if (result.type === 'success') {
 				const return_to = $page.url.searchParams.get('return_to');
-				// Store the auth token that matches our mock user in hooks.server.ts
+				// Store the auth token and set up server-side auth
 				localStorage.setItem('auth_token', 'demo-user');
-				// Force a page reload to ensure all auth state is updated
-				window.location.href = return_to || '/';
+				// Set up server-side auth cookie
+				get_current_user();
+				// Wait for cookie to be set
+				await new Promise(resolve => setTimeout(resolve, 100));
+				// Navigate to return URL or home
+				goto(return_to || '/');
 			}
 		};
 	};
