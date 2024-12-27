@@ -1,4 +1,5 @@
 import { env } from '$env/dynamic/private';
+import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 /**
@@ -61,12 +62,15 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 	try {
 		// Authorization check
 		if (!locals.user) {
-			throw new Error('Authentication required');
+			// Redirect to login
+			throw redirect(303, '/login');
 		}
 
 		// Role-based access control
 		if (!locals.user.roles.includes('admin')) {
-			throw new Error('Insufficient permissions');
+			throw error(403, {
+				message: 'Insufficient permissions',
+			});
 		}
 
 		// Simulate secure data fetch

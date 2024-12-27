@@ -4,7 +4,31 @@
 	import { CheckCircle } from '$lib/icons';
 	import type { SubmitFunction } from '@sveltejs/kit';
 
-	let { form } = $props();
+	interface FormFields {
+		id?: string;
+		email?: string;
+		action?: 'create' | 'update' | 'delete';
+	}
+
+	interface ValidationIssues {
+		id?: string;
+		email?: string;
+		action?: string;
+	}
+
+	interface FormData {
+		error?: string;
+		issues?: ValidationIssues;
+		fields?: FormFields;
+		success?: boolean;
+		data?: {
+			id: string;
+			processed: boolean;
+			timestamp: string;
+		};
+	}
+
+	let { form } = $props<{ form?: FormData }>();
 
 	let loading = $state(false);
 
@@ -66,14 +90,65 @@
 						pattern="[a-zA-Z0-9-_]+"
 						required
 					/>
-					{#if form?.error}
+					{#if form?.issues?.id}
 						<label for="id" class="label">
 							<span class="label-text-alt text-error">
-								{form.error}
+								{form.issues.id}
 							</span>
 						</label>
 					{/if}
 				</div>
+
+				<div class="form-control w-full max-w-xs">
+					<label for="email" class="label">
+						<span class="label-text">Email (optional)</span>
+					</label>
+					<input
+						id="email"
+						name="email"
+						type="email"
+						class="input input-bordered w-full max-w-xs"
+						value={form?.fields?.email ?? ''}
+						placeholder="Enter your email"
+					/>
+					{#if form?.issues?.email}
+						<label for="email" class="label">
+							<span class="label-text-alt text-error">
+								{form.issues.email}
+							</span>
+						</label>
+					{/if}
+				</div>
+
+				<div class="form-control w-full max-w-xs">
+					<label for="action" class="label">
+						<span class="label-text">Action</span>
+					</label>
+					<select
+						id="action"
+						name="action"
+						class="select select-bordered w-full max-w-xs"
+						value={form?.fields?.action ?? 'create'}
+						required
+					>
+						<option value="create">Create</option>
+						<option value="update">Update</option>
+						<option value="delete">Delete</option>
+					</select>
+					{#if form?.issues?.action}
+						<label for="action" class="label">
+							<span class="label-text-alt text-error">
+								{form.issues.action}
+							</span>
+						</label>
+					{/if}
+				</div>
+
+				{#if form?.error}
+					<div class="alert alert-error">
+						<span>{form.error}</span>
+					</div>
+				{/if}
 
 				<button class="btn btn-primary" disabled={loading}>
 					{#if loading}

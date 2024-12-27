@@ -1,8 +1,18 @@
 <script lang="ts">
 	import { footer_banner } from '$lib/components/footer-banner.svelte';
 	import { info_banner } from '$lib/components/info-banner.svelte';
+	import { use_auth } from '$lib/auth';
+	import { goto } from '$app/navigation';
 
 	let { data } = $props();
+
+	// Handle authentication
+	use_auth();
+
+	function handle_logout() {
+		localStorage.removeItem('auth_token');
+		goto('/login');
+	}
 </script>
 
 <div class="prose max-w-none">
@@ -37,7 +47,12 @@
 
 	<div class="card bg-base-200">
 		<div class="card-body">
-			<h2 class="card-title mb-4">User Data (Filtered)</h2>
+			<div class="mb-4 flex items-center justify-between">
+				<h2 class="card-title">User Data (Filtered)</h2>
+				<button class="btn btn-error btn-sm" on:click={handle_logout}>
+					Logout
+				</button>
+			</div>
 
 			{@render info_banner(
 				'warning',

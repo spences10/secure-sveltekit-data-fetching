@@ -133,6 +133,7 @@ export const load: PageServerLoad = async ({ fetch, setHeaders }) => {
 	const data = await fetch('/api/secure-endpoint', {
 		headers: {
 			'X-API-Key': 'secret123',
+			Accept: 'application/json',
 		},
 	});
 

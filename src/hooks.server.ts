@@ -1,93 +1,98 @@
-export async function handle({ event, resolve }) {
-	const response = await resolve(event);
+interface User {
+	id: string;
+	roles: string[];
+	email: string;
+	permissions: string[];
+}
 
+interface Users {
+	[key: string]: User;
+}
+
+// For demo purposes - in production use a proper authentication system
+const MOCK_USERS: Users = {
+	'demo-user': {
+		id: 'demo-user',
+		roles: ['admin'],
+		email: 'demo@example.com',
+		permissions: ['read:secure', 'write:secure'],
+	},
+};
+
+function set_security_headers(response: Response) {
 	// Global security headers
-	response.headers.set(
-		'Strict-Transport-Security',
-		'max-age=31536000; includeSubDomains; preload',
-	);
-
-	// Enhanced Content Security Policy
-	response.headers.set(
-		'Content-Security-Policy',
-		[
-			// Restrict default sources to same origin
+	const headers = {
+		'Strict-Transport-Security':
+			'max-age=31536000; includeSubDomains; preload',
+		'Content-Security-Policy': [
 			"default-src 'self'",
-			// Allow inline styles and scripts needed by SvelteKit
 			"style-src 'self' 'unsafe-inline'",
 			"script-src 'self' 'unsafe-inline'",
-			// Allow data: URIs for images (often used by DaisyUI)
 			"img-src 'self' data:",
-			// Connect-src for Vite HMR in development
 			"connect-src 'self' ws: wss:",
-			// Font sources
 			"font-src 'self'",
-			// Media sources
 			"media-src 'self'",
-			// Object sources (PDFs, etc)
 			"object-src 'none'",
-			// Frame sources
 			"frame-src 'none'",
-			// Worker sources
 			"worker-src 'self'",
-			// Manifest sources
 			"manifest-src 'self'",
-			// Form actions
 			"form-action 'self'",
-			// Base URI
 			"base-uri 'self'",
-			// Frame ancestors
 			"frame-ancestors 'none'",
-			// Upgrade insecure requests
 			'upgrade-insecure-requests',
 		].join('; '),
-	);
-
-	// Additional security headers
-	response.headers.set('X-Frame-Options', 'DENY');
-	response.headers.set('X-Content-Type-Options', 'nosniff');
-	response.headers.set(
-		'Permissions-Policy',
-		[
+		'X-Frame-Options': 'DENY',
+		'X-Content-Type-Options': 'nosniff',
+		'Permissions-Policy': [
 			'accelerometer=()',
-			'ambient-light-sensor=()',
 			'autoplay=()',
-			'battery=()',
 			'camera=()',
 			'display-capture=()',
-			'document-domain=()',
 			'encrypted-media=()',
-			'execution-while-not-rendered=()',
-			'execution-while-out-of-viewport=()',
 			'fullscreen=()',
 			'geolocation=()',
 			'gyroscope=()',
-			'keyboard-map=()',
 			'magnetometer=()',
 			'microphone=()',
 			'midi=()',
 			'payment=()',
 			'picture-in-picture=()',
-			'publickey-credentials-get=()',
 			'screen-wake-lock=()',
-			'sync-xhr=()',
 			'usb=()',
-			'web-share=()',
 			'xr-spatial-tracking=()',
 		].join(', '),
-	);
-	response.headers.set(
-		'Referrer-Policy',
-		'strict-origin-when-cross-origin',
-	);
-	response.headers.set('Cross-Origin-Opener-Policy', 'same-origin');
-	response.headers.set(
-		'Cross-Origin-Embedder-Policy',
-		'require-corp',
-	);
-	response.headers.set('Cross-Origin-Resource-Policy', 'same-origin');
-	response.headers.set('X-Permitted-Cross-Domain-Policies', 'none');
-	response.headers.set('X-DNS-Prefetch-Control', 'off');
+		'Referrer-Policy': 'strict-origin-when-cross-origin',
+		'Cross-Origin-Opener-Policy': 'same-origin',
+		'Cross-Origin-Embedder-Policy': 'require-corp',
+		'Cross-Origin-Resource-Policy': 'same-origin',
+		'X-Permitted-Cross-Domain-Policies': 'none',
+		'X-DNS-Prefetch-Control': 'off',
+	};
+
+	Object.entries(headers).forEach(([key, value]) => {
+		response.headers.set(key, value);
+	});
+}
+
+function get_user_from_request(event: any): User | undefined {
+	// For demo purposes - in production use proper session management
+	const auth_header = event.request.headers.get('Authorization');
+	if (!auth_header) return undefined;
+
+	const user_id = auth_header.replace('Bearer ', '');
+	return MOCK_USERS[user_id] || undefined;
+}
+
+export async function handle({ event, resolve }) {
+	// Handle authentication
+	const user = get_user_from_request(event);
+	event.locals.user = user;
+
+	// Process the request
+	const response = await resolve(event);
+
+	// Add security headers
+	set_security_headers(response);
 
 	return response;
 }
