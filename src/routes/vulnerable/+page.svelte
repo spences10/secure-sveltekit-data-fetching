@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { Warning, ErrorX } from '$lib/icons';
-	import { info_banner } from '$lib/components/info-banner.svelte';
 	import { footer_banner } from '$lib/components/footer-banner.svelte';
+	import { info_banner } from '$lib/components/info-banner.svelte';
+	import { ErrorX, Warning } from '$lib/icons';
+	import { onMount } from 'svelte';
 
 	let data: any = null;
 	let error: string | null = null;

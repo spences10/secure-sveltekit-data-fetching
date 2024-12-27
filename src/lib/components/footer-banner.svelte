@@ -1,9 +1,9 @@
 <script lang="ts" module>
 	import {
-		InformationCircle,
-		Warning,
 		CheckCircle,
 		ErrorX,
+		InformationCircle,
+		Warning,
 	} from '$lib/icons';
 	export { footer_banner };
 

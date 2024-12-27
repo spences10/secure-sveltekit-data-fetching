@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import type { SubmitFunction } from '@sveltejs/kit';
-	import { CheckCircle } from '$lib/icons';
 	import { info_banner } from '$lib/components/info-banner.svelte';
+	import { CheckCircle } from '$lib/icons';
+	import type { SubmitFunction } from '@sveltejs/kit';
 
 	let { form } = $props();
 
 	let loading = $state(false);
 
-	const handleSubmit: SubmitFunction = () => {
+	const handle_submit: SubmitFunction = () => {
 		loading = true;
 		return async ({ update }) => {
 			await update();
@@ -47,7 +47,7 @@
 
 			<form
 				method="POST"
-				use:enhance={handleSubmit}
+				use:enhance={handle_submit}
 				class="space-y-4"
 			>
 				<div class="form-control w-full max-w-xs">
