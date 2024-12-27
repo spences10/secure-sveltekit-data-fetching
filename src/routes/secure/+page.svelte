@@ -1,16 +1,30 @@
 <script lang="ts">
 	import { footer_banner } from '$lib/components/footer-banner.svelte';
 	import { info_banner } from '$lib/components/info-banner.svelte';
-	import { use_auth } from '$lib/auth';
+	import { use_auth, clear_auth } from '$lib/auth';
 	import { goto } from '$app/navigation';
+	import type { PageData } from './$types';
 
 	let { data } = $props();
+
+	// Type-check the data
+	type SecurePageData = PageData & {
+		users: Array<{
+			id: number;
+			email: string;
+		}>;
+	};
+
+	$effect(() => {
+		// Ensure data matches expected type
+		const _typed_data: SecurePageData = data;
+	});
 
 	// Handle authentication
 	use_auth();
 
 	function handle_logout() {
-		localStorage.removeItem('auth_token');
+		clear_auth();
 		goto('/login');
 	}
 </script>
@@ -48,7 +62,12 @@
 	<div class="card bg-base-200">
 		<div class="card-body">
 			<div class="mb-4 flex items-center justify-between">
-				<h2 class="card-title">User Data (Filtered)</h2>
+				<div>
+					<h2 class="card-title">User Data (Filtered)</h2>
+					{#if data.user}
+						<p class="text-sm opacity-80">Logged in as {data.user.email} ({data.user.roles.join(', ')})</p>
+					{/if}
+				</div>
 				<button class="btn btn-error btn-sm" on:click={handle_logout}>
 					Logout
 				</button>

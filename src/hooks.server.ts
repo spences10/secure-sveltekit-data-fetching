@@ -1,16 +1,7 @@
-interface User {
-	id: string;
-	roles: string[];
-	email: string;
-	permissions: string[];
-}
+import type { Handle } from '@sveltejs/kit';
 
-interface Users {
-	[key: string]: User;
-}
-
-// For demo purposes - in production use a proper authentication system
-const MOCK_USERS: Users = {
+// Mock users database - in production use a proper authentication system
+const MOCK_USERS: Record<string, App.Locals['user']> = {
 	'demo-user': {
 		id: 'demo-user',
 		roles: ['admin'],
@@ -19,7 +10,7 @@ const MOCK_USERS: Users = {
 	},
 };
 
-function set_security_headers(response: Response) {
+function set_security_headers(response: Response): void {
 	// Global security headers
 	const headers = {
 		'Strict-Transport-Security':
@@ -74,16 +65,34 @@ function set_security_headers(response: Response) {
 	});
 }
 
-function get_user_from_request(event: any): User | undefined {
+function get_user_from_request(event: Parameters<Handle>[0]['event']): App.Locals['user'] | undefined {
 	// For demo purposes - in production use proper session management
 	const auth_header = event.request.headers.get('Authorization');
-	if (!auth_header) return undefined;
-
-	const user_id = auth_header.replace('Bearer ', '');
-	return MOCK_USERS[user_id] || undefined;
+	const cookie_header = event.request.headers.get('cookie');
+	
+	// Try to get token from Authorization header
+	if (auth_header) {
+		const user_id = auth_header.replace('Bearer ', '');
+		return MOCK_USERS[user_id];
+	}
+	
+	// Try to get token from cookie
+	if (cookie_header) {
+		const cookies: Record<string, string> = {};
+		cookie_header.split(';').forEach((cookie: string) => {
+			const [key, value] = cookie.trim().split('=');
+			cookies[key] = value;
+		});
+		
+		if (cookies.auth_token) {
+			return MOCK_USERS[cookies.auth_token];
+		}
+	}
+	
+	return undefined;
 }
 
-export async function handle({ event, resolve }) {
+export const handle: Handle = async ({ event, resolve }) => {
 	// Handle authentication
 	const user = get_user_from_request(event);
 	event.locals.user = user;
