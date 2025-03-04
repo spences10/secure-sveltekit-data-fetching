@@ -37,13 +37,13 @@ export function get_current_user(): User | null {
 
 	// Set auth cookie for server-side auth
 	document.cookie = `auth_token=demo-user; path=/; SameSite=Strict`;
-	
+
 	// For demo purposes - matches the mock user in hooks.server.ts
 	return {
 		id: 'demo-user',
 		roles: ['admin'],
 		email: 'demo@example.com',
-		permissions: ['read:secure', 'write:secure']
+		permissions: ['read:secure', 'write:secure'],
 	};
 }
 
@@ -51,7 +51,8 @@ export function get_current_user(): User | null {
 export function clear_auth(): void {
 	if (!browser) return;
 	localStorage.removeItem('auth_token');
-	document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+	document.cookie =
+		'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
 }
 
 // Middleware to add auth token to fetch requests

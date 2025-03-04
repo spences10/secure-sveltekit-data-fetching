@@ -65,34 +65,36 @@ function set_security_headers(response: Response): void {
 	});
 }
 
-function get_user_from_request(event: Parameters<Handle>[0]['event']): App.Locals['user'] | undefined {
+function get_user_from_request(
+	event: Parameters<Handle>[0]['event'],
+): App.Locals['user'] | undefined {
 	// For demo purposes - in production use proper session management
 	const auth_header = event.request.headers.get('Authorization');
 	const cookie_header = event.request.headers.get('cookie');
-	
+
 	// Try to get token from Authorization header
 	if (auth_header) {
 		const user_id = auth_header.replace('Bearer ', '');
 		return MOCK_USERS[user_id];
 	}
-	
+
 	// Try to get token from cookie
 	if (cookie_header) {
 		const cookies: Record<string, string> = {};
 		cookie_header.split(';').forEach((cookie: string) => {
-		const parts = cookie.trim().split('=');
-		if (parts.length >= 2) {
-			const key = parts[0];
-			const value = parts.slice(1).join('=');
-			cookies[key] = value;
-		}
+			const parts = cookie.trim().split('=');
+			if (parts.length >= 2) {
+				const key = parts[0];
+				const value = parts.slice(1).join('=');
+				cookies[key] = value;
+			}
 		});
-		
+
 		if (cookies.auth_token) {
 			return MOCK_USERS[cookies.auth_token];
 		}
 	}
-	
+
 	return undefined;
 }
 
@@ -108,4 +110,4 @@ export const handle: Handle = async ({ event, resolve }) => {
 	set_security_headers(response);
 
 	return response;
-}
+};

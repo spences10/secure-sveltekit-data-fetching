@@ -50,7 +50,7 @@
 		'alert alert-info mb-6',
 	)}
 
-	<div class="card mb-6 bg-base-200">
+	<div class="card bg-base-200 mb-6">
 		<div class="card-body">
 			<h2 class="card-title">Security Features</h2>
 			<ul class="ml-6 list-disc">

@@ -2,9 +2,9 @@
 	import { browser } from '$app/environment';
 	import { footer_banner } from '$lib/components/footer-banner.svelte';
 	import { info_banner } from '$lib/components/info-banner.svelte';
-	
+
 	let is_authenticated = $state(false);
-	
+
 	$effect(() => {
 		if (browser) {
 			is_authenticated = !!localStorage.getItem('auth_token');
@@ -27,14 +27,25 @@
 		<div class="card bg-primary text-primary-content mb-6">
 			<div class="card-body">
 				<h2 class="card-title">👋 Welcome to the Security Demo</h2>
-				<p>Some examples require authentication to demonstrate secure vs vulnerable implementations.</p>
-				<p class="text-sm opacity-90">Use these demo credentials to explore all features:</p>
-				<div class="bg-primary-focus rounded p-3 mt-2 font-mono text-sm">
-					Email: demo@example.com<br>
+				<p>
+					Some examples require authentication to demonstrate secure
+					vs vulnerable implementations.
+				</p>
+				<p class="text-sm opacity-90">
+					Use these demo credentials to explore all features:
+				</p>
+				<div
+					class="bg-primary-focus mt-2 rounded p-3 font-mono text-sm"
+				>
+					Email: demo@example.com<br />
 					Password: demo123
 				</div>
-				<div class="card-actions justify-center mt-4">
-					<a href="/login" class="btn btn-primary btn-lg w-full sm:w-auto">Login to Access All Examples</a>
+				<div class="card-actions mt-4 justify-center">
+					<a
+						href="/login"
+						class="btn btn-primary btn-lg w-full sm:w-auto"
+						>Login to Access All Examples</a
+					>
 				</div>
 			</div>
 		</div>
@@ -63,7 +74,7 @@
 				<div class="card-actions mt-auto justify-end">
 					<a
 						href="/secure-headers"
-						class="btn btn-primary btn-sm w-full sm:btn-md sm:w-auto"
+						class="btn btn-primary btn-sm sm:btn-md w-full sm:w-auto"
 					>
 						View Example
 					</a>
@@ -82,7 +93,7 @@
 				<div class="card-actions mt-auto justify-end">
 					<a
 						href="/form-action"
-						class="btn btn-primary btn-sm w-full sm:btn-md sm:w-auto"
+						class="btn btn-primary btn-sm sm:btn-md w-full sm:w-auto"
 						>View Example</a
 					>
 				</div>
@@ -103,14 +114,14 @@
 					{#if !is_authenticated}
 						<a
 							href="/login"
-							class="btn btn-primary btn-sm w-full sm:btn-md sm:w-auto"
+							class="btn btn-primary btn-sm sm:btn-md w-full sm:w-auto"
 						>
 							Login to View
 						</a>
 					{:else}
 						<a
 							href="/secure"
-							class="btn btn-primary btn-sm w-full sm:btn-md sm:w-auto"
+							class="btn btn-primary btn-sm sm:btn-md w-full sm:w-auto"
 						>
 							View Example
 						</a>
@@ -119,7 +130,7 @@
 			</div>
 		</div>
 
-		<div class="card border-2 border-warning bg-base-200">
+		<div class="card border-warning bg-base-200 border-2">
 			<div class="card-body p-4 sm:p-6">
 				<h3
 					class="card-title flex flex-wrap gap-2 text-lg sm:text-xl"
@@ -141,7 +152,7 @@
 				<div class="card-actions mt-auto justify-end">
 					<a
 						href="/vulnerable"
-						class="btn btn-warning btn-sm w-full sm:btn-md sm:w-auto"
+						class="btn btn-warning btn-sm sm:btn-md w-full sm:w-auto"
 					>
 						View Example
 					</a>

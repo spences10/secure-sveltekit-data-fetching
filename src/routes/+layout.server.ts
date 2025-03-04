@@ -8,7 +8,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 					id: locals.user.id,
 					email: locals.user.email,
 					roles: locals.user.roles,
-			  }
+				}
 			: null,
 	};
 };

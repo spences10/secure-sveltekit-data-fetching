@@ -121,7 +121,7 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 				// apiEndpoint is omitted as it's internal configuration
 			},
 			// secretKey is not included in the response
-			user: locals.user
+			user: locals.user,
 		};
 	} catch (error) {
 		// Log the error (use proper error logging in production)

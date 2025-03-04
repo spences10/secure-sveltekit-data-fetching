@@ -7,7 +7,6 @@
 
 	let { data } = $props();
 
-
 	// Handle authentication
 	use_auth();
 
@@ -23,10 +22,10 @@
 	{@render info_banner(
 		'information',
 		'This example demonstrates secure server-side data handling and filtering of sensitive information.',
-		'alert alert-info mb-6'
+		'alert alert-info mb-6',
 	)}
 
-	<div class="card mb-6 bg-base-200">
+	<div class="card bg-base-200 mb-6">
 		<div class="card-body">
 			<h2 class="card-title">Security Features</h2>
 			<ul class="ml-6 list-disc">
@@ -53,7 +52,11 @@
 				<div>
 					<h2 class="card-title">User Data (Filtered)</h2>
 					{#if data.user}
-						<p class="text-sm opacity-80">Logged in as {data.user.email} ({data.user.roles.join(', ')})</p>
+						<p class="text-sm opacity-80">
+							Logged in as {data.user.email} ({data.user.roles.join(
+								', ',
+							)})
+						</p>
 					{/if}
 				</div>
 				<button class="btn btn-error btn-sm" on:click={handle_logout}>
@@ -64,7 +67,7 @@
 			{@render info_banner(
 				'warning',
 				'Notice that sensitive data (API keys) has been filtered out server-side',
-				'alert alert-warning mb-4'
+				'alert alert-warning mb-4',
 			)}
 
 			<div class="overflow-x-auto">
@@ -96,9 +99,10 @@
 				'success',
 				{
 					title: 'Security Best Practice',
-					description: 'Always filter sensitive data server-side. Never rely on client-side filtering as it can be bypassed.'
+					description:
+						'Always filter sensitive data server-side. Never rely on client-side filtering as it can be bypassed.',
 				},
-				'alert alert-success mt-4'
+				'alert alert-success mt-4',
 			)}
 		</div>
 	</div>

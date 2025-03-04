@@ -20,7 +20,7 @@
 				// Set up server-side auth cookie
 				get_current_user();
 				// Wait for cookie to be set
-				await new Promise(resolve => setTimeout(resolve, 100));
+				await new Promise((resolve) => setTimeout(resolve, 100));
 				// Navigate to return URL or home
 				goto(return_to || '/');
 			}

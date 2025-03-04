@@ -4,7 +4,7 @@
 	let { children } = $props();
 </script>
 
-<div class="min-h-screen bg-base-100 antialiased">
+<div class="bg-base-100 min-h-screen antialiased">
 	<Nav />
 	<main class="container mx-auto max-w-screen-lg px-4">
 		{@render children()}

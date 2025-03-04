@@ -28,7 +28,7 @@
 			'This page demonstrates common security anti-patterns. DO NOT use this code in production!',
 		)}
 
-		<div class="card mb-6 bg-base-200">
+		<div class="card bg-base-200 mb-6">
 			<div class="card-body">
 				<h2 class="card-title text-success">Security Improvements</h2>
 				<ul class="ml-6 list-disc">

@@ -18,7 +18,7 @@
 </script>
 
 <!-- Navigation bar using DaisyUI navbar component -->
-<div class="navbar mb-8 bg-base-100 shadow-lg">
+<div class="navbar bg-base-100 mb-8 shadow-lg">
 	<div class="navbar-start">
 		<div class="dropdown">
 			<!-- Hamburger menu for mobile -->
@@ -27,7 +27,7 @@
 			</button>
 			<!-- Mobile menu -->
 			<div
-				class="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
+				class="menu dropdown-content menu-sm rounded-box bg-base-100 z-[1] mt-3 w-52 p-2 shadow"
 				role="menu"
 			>
 				{#each nav_items as { href, label }}
